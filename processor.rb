@@ -12,6 +12,9 @@ store_id = ARGV[1]
 website_id = ARGV[2]
 base_url = ARGV[3]
 company_name = ARGV[4]
+app_icon_file = ARGV[5]
+
+#system ios-icon-generator.sh app_icon_file output/
 
 nameWithoutSpaces = name.gsub(/\s+/, "")
 dir_root = 'HelloWorld/'
