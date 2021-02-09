@@ -14,9 +14,6 @@ base_url = ARGV[3]
 company_name = ARGV[4]
 app_icon_file = ARGV[5]
 
-puts Dir.pwd
-#system ios-icon-generator.sh app_icon_file output/
-
 nameWithoutSpaces = name.gsub(/\s+/, "")
 dir_root = 'ClientStore/'
 launch_screen_file_name = 'LaunchScreen' + nameWithoutSpaces
@@ -26,7 +23,7 @@ lanuch_screen_source = dir_root + 'Mobikul/StoryBoards/Base.lproj/LaunchScreen.s
 dir_assets = dir_root + 'Mobikul/Assets.xcassets/'
 filename_app_icon = 'AppIcon' + nameWithoutSpaces
 filename_artboard = 'Artboard' + nameWithoutSpaces
-dir_app_icon_src = dir_assets + 'AppIcon.appiconset'
+dir_app_icon_src = dir_assets + 'AppIconFashion.appiconset'
 dir_app_icon_target = dir_assets + filename_app_icon + '.appiconset'
 dir_artboard_src = dir_assets + 'Artboard.imageset'
 dir_artboard_target = dir_assets + filename_artboard + '.imageset'
@@ -107,9 +104,6 @@ FileUtils.cp(info_plist_en_src, info_plist_en_target)
 FileUtils.cp(info_plist_ar_src, info_plist_ar_target)
 
 # copy launch screen
-puts(lanuch_screen_source)
-puts(launch_screen_file_name)
-puts(proj.main_group.path)
 FileUtils.cp(lanuch_screen_source, lanuch_screen_target)
 group_launch_screen = proj.main_group.find_subpath(dir_root + 'Mobikul/StoryBoards')
 reference_launch_screen = group_launch_screen.new_reference('Base.lproj/'+ launch_screen_file_name + '.storyboard')
@@ -117,10 +111,8 @@ reference_launch_screen = group_launch_screen.new_reference('Base.lproj/'+ launc
 resources = target.build_phases.find { |x| x.instance_of? Xcodeproj::Project::Object::PBXResourcesBuildPhase }
 resources.add_file_reference(reference_launch_screen)
 
-
 FileUtils.copy_entry(dir_app_icon_src, dir_app_icon_target)
 FileUtils.copy_entry(dir_artboard_src, dir_artboard_target)
-
 
 target.build_configurations.each do |config|
     config.build_settings['INFOPLIST_FILE'] = info_plist_en_target
