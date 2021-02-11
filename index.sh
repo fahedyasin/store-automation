@@ -17,7 +17,7 @@ generatAppIcons() {
 
 createNewTarget() {
     chmod +x ../ios_target_handler.rb
-    ruby ../ios_target_handler.rb "Fahed Store" 11 22 https://dev.satorespal.com "StoresPal" 1024.png
+    ruby ../ios_target_handler.rb "$STORE_NAME" $STORE_ID $WEBSITE_ID $BASE_URL "$COMPANY_NAME"
 }
 
 copyAppIconFiles() {
@@ -36,13 +36,13 @@ cleanup() {
 }
 
 generatAppIcons
-prepareRepository
+# prepareRepository
 cd $DIR_CODEBASE
-pod install
 createNewTarget
+pod install
 copyAppIconFiles
 
 # cleanup
-echo $STORE_NAME $APP_ICON_FILE
+# echo $STORE_NAME $APP_ICON_FILE
 
 
