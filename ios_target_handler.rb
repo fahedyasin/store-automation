@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'xcodeproj'
+require 'nokogiri'
 
 if ARGV.length < 5
     puts "Please provide input in the following order: store name, store id, website id, base url, company name"
@@ -109,6 +110,15 @@ puts "Creating app icon files..."
 FileUtils.copy_entry(dir_app_icon_src, dir_app_icon_target)
 puts "Creating artboard files..."
 FileUtils.copy_entry(dir_artboard_src, dir_artboard_target)
+
+puts "Update launch screen image..."
+@doc = Nokogiri::XML(File.open(lanuch_screen_target))
+resourceImage = @doc.xpath("//image").first
+resourceImage["name"] = filename_artboard
+imageView = @doc.xpath("//imageView").first
+imageView["image"] = filename_artboard
+File.write(lanuch_screen_target, @doc.to_xml)
+
 
 puts "Updating build configurations..."
 target.build_configurations.each do |config|
