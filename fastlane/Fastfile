@@ -12,17 +12,21 @@ platform :ios do
     Dotenv.load ".env.ios"
   end
 
+  desc "Generate screenshots"
+  lane :capture_screenshots do
+    capture_screenshots
+  end
+
   desc "Sync signing"
   lane :signing do
-    # fastlane match nuke
-    # automatic_code_signing
+    capture_screenshots
     sync_code_signing #match
-    # mapping = Actions.lane_context[
-    #   SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING
-    # ]
-    # update_code_signing_settings(
-    #   profile_name: mapping[ENV['MATCH_APP_IDENTIFIER']]
-    # )
+    mapping = Actions.lane_context[
+      SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING
+    ]
+    update_code_signing_settings(
+      profile_name: mapping[ENV['MATCH_APP_IDENTIFIER']]
+    )
   end
 
   desc "Build binary"

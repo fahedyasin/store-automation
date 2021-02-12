@@ -137,7 +137,7 @@ puts "Updting target properties in plist..."
 plist = Xcodeproj::Plist
 plist_values = plist.read_from_path(info_plist_en_target)
 
-plist_values.store("storeId", store_id)
+plist_values.store("StoreId", store_id)
 plist_values.store("CFBundleShortVersionString", "1.0")
 plist_values.store("CFBundleVersion", "1")
 plist_values.store("UILaunchStoryboardName", launch_screen_file_name)
@@ -146,7 +146,7 @@ plist_values.store("BaseUrl", base_url)
 plist_values.store("companyName", company_name)
 plist_values.store("FacebookDisplayName", name)
 plist_values.store("CFBundleDisplayName", name)
-plist_values.store("websiteId", website_id)
+plist_values.store("WebsiteId", website_id)
 plist_values.store("logoImage", filename_artboard)
 
 plist.write_to_path(plist_values, info_plist_en_target)
