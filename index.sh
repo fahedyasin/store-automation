@@ -59,6 +59,10 @@ PRODUCE_SKU=$SKU" >> fastlane/.env
 FL_PROJECT_SIGNING_TARGETS=$TARGET_NAME
 GYM_SCHEME=$TARGET_NAME" >> fastlane/.env.ios
 
+bundle install
+fastlane create_app
+fastlane ios release
+
 }
 
 cleanup() {
@@ -68,12 +72,12 @@ cleanup() {
     rm -rf $DIR_CODEBASE
 }
 
-# generatAppIcons
-# prepareRepository
+generatAppIcons
+prepareRepository
 cd $DIR_CODEBASE
-# createNewTarget
-# pod install
-# copyAppIconFiles
+createNewTarget
+pod install
+copyAppIconFiles
 # managePullRequest
 prepareFastlane
 # cleanup
