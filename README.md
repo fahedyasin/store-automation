@@ -9,7 +9,7 @@ Prerequisites:
 - Nokogiri
 
 Run command for index.sh:
-index.sh "Fahed Store" 11 22 https://dev.satorespal.com "StoresPal" 1024.png
+index.sh "Fahed Store 11" 11 22 https://dev.satorespal.com "StoresPal" 1024.png
 
 
 Run command for Ruby script: 

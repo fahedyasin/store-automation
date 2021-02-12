@@ -6,8 +6,12 @@ WEBSITE_ID="$3"
 BASE_URL="$4"
 COMPANY_NAME="$5"
 APP_ICON_FILE="$6"
-STORE_NAME_WITHOUT_SPACES=$(echo $STORE_NAME | tr -d ' ')
-BRANCH_NAME="store-$STORE_NAME_WITHOUT_SPACES"
+TARGET_NAME=$(echo $STORE_NAME | tr -d ' ')
+BRANCH_NAME="store-$TARGET_NAME"
+BUNDLE_ID="com.storespal.$TARGET_NAME"
+SKU=$(echo $STORE_NAME | tr [a-z] [A-Z])
+SKU=$(echo ${SKU// /_})
+
 # directories
 DIR_CODEBASE="storespal-client-ios/"
 DIR_APP_ICON_OUTPUT="output/"
@@ -22,7 +26,7 @@ createNewTarget() {
 }
 
 copyAppIconFiles() {
-    cp -fR ../output/ "ClientStore/Mobikul/Assets.xcassets/AppIcon$STORE_NAME_WITHOUT_SPACES.appiconset"
+    cp -fR ../output/ "ClientStore/Mobikul/Assets.xcassets/AppIcon$TARGET_NAME.appiconset"
 }
 
 prepareRepository() {
@@ -38,6 +42,25 @@ managePullRequest() {
     gh pr create -t "Store $STORE_NAME" -b "Created new store"
 }
 
+prepareFastlane() {
+    cp -fR ../fastlane/ fastlane/
+    cp -fR ../Gemfile .
+
+    # append .env file
+    echo "
+PRODUCE_APP_IDENTIFIER=$BUNDLE_ID
+MATCH_APP_IDENTIFIER=$BUNDLE_ID
+DELIVER_APP_IDENTIFIER=$BUNDLE_ID
+PRODUCE_APP_NAME=$STORE_NAME
+PRODUCE_SKU=$SKU" >> fastlane/.env
+
+# append .env.ios file
+    echo "
+FL_PROJECT_SIGNING_TARGETS=$TARGET_NAME
+GYM_SCHEME=$TARGET_NAME" >> fastlane/.env.ios
+
+}
+
 cleanup() {
     cd ..
     ls
@@ -45,13 +68,14 @@ cleanup() {
     rm -rf $DIR_CODEBASE
 }
 
-generatAppIcons
+# generatAppIcons
 # prepareRepository
 cd $DIR_CODEBASE
-createNewTarget
-pod install
-copyAppIconFiles
+# createNewTarget
+# pod install
+# copyAppIconFiles
 # managePullRequest
+prepareFastlane
 # cleanup
 # echo $STORE_NAME $APP_ICON_FILE
 
