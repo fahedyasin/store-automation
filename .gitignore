@@ -1,0 +1,15 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
+# OS X Finder
+.DS_Store
+
+
+# Fastlane test reports
+fastlane/test_output/
+fastlane/code_coverage/
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+
+
+fastlane/.env.secret

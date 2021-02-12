@@ -35,6 +35,7 @@ managePullRequest() {
     git add .
     git commit -m "Created new store $STORE_NAME"
     git push --set-upstream origin $BRANCH_NAME
+    gh pr create -t "Store $STORE_NAME" -b "Created new store"
 }
 
 cleanup() {
@@ -50,7 +51,7 @@ cd $DIR_CODEBASE
 createNewTarget
 pod install
 copyAppIconFiles
-managePullRequest
+# managePullRequest
 # cleanup
 # echo $STORE_NAME $APP_ICON_FILE
 
