@@ -3,8 +3,15 @@ before_all do
 end
 
 desc "Create app in Developer Portal and on App Store Connect"
-  lane :create_app do
-    create_app_online #produce
+lane :create_app do
+  # create_app_online #produce
+  produce(
+    enable_services: {
+      apple_pay: "on",
+      associated_domains: "on",
+      push_notification: "on"
+    }
+  )
   end
 
 platform :ios do
@@ -13,13 +20,13 @@ platform :ios do
   end
 
   desc "Generate screenshots"
-  lane :capture_screenshots do
+  lane :generate_screenshots do
     capture_screenshots
   end
 
   desc "Sync signing"
   lane :signing do
-    capture_screenshots
+    # generate_screenshots
     sync_code_signing #match
     mapping = Actions.lane_context[
       SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING

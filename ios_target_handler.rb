@@ -39,6 +39,7 @@ puts "Opening Xcode project..."
 proj = Xcodeproj::Project.open('ClientStore.xcodeproj')
 src_target = proj.targets.find { |item| item.to_s == 'ClientStoreDemoFashion' }
 
+
 # create target
 puts "Creating new target " + nameWithoutSpaces + "..."
 target = proj.new_target(src_target.symbol_type, nameWithoutSpaces, src_target.platform_name, src_target.deployment_target)
@@ -175,9 +176,28 @@ end
 #build_file.file_ref = file_ref
 #sources.files << build_file
 
+# puts Xcodeproj::Constants::PROXY_TYPES.native_target
+# proxy = proj.new(Xcodeproj::Project::Object::PBXContainerItemProxy)
+# proxy.container_portal = proj.root_object.uuid
+# proxy.proxy_type = '1' #Constants::PROXY_TYPES.native_target
+# proxy.remote_global_id_string = target.uuid
+# proxy.remote_info = nameWithoutSpaces
+
+# dependency = proj.new(Xcodeproj::Project::Object::PBXTargetDependency)
+# dependency.target = target.uuid
+# dependency.target_proxy = proxy.uuid
+
+ui_tests_target = proj.targets.find { |item| item.to_s == 'ClientStoreUITests' }
+ui_tests_target.build_configurations.each do |config|
+  config.build_settings['TEST_TARGET_NAME'] = nameWithoutSpaces
+end
+
+
+
+
 puts "Saving project..."
 proj.save
 
-puts "Congrattulations...."
+puts "Congratulations...."
 
 # set new info.plist files to this target

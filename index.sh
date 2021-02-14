@@ -59,10 +59,10 @@ PRODUCE_SKU=$SKU" >> fastlane/.env
 FL_PROJECT_SIGNING_TARGETS=$TARGET_NAME
 GYM_SCHEME=$TARGET_NAME" >> fastlane/.env.ios
 
-bundle install
-fastlane create_app
-fastlane ios release
-
+    bundle install
+    fastlane create_app
+    fastlane produce associate_merchant -a $BUNDLE_ID merchant.com.saee.scannerApplePayLive
+    fastlane ios release
 }
 
 cleanup() {
