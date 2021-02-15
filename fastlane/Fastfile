@@ -60,11 +60,12 @@ platform :ios do
       submission_information: {
         export_compliance_uses_encryption: false,
         add_id_info_uses_idfa: false
-      }
+      },
+      app_rating_config_path: 'fastlane/metadata/app_store_rating_config.json'
     )
   end
   
-end
+endb
 
 platform :mac do
 end
