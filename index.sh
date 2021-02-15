@@ -59,10 +59,13 @@ PRODUCE_SKU=$SKU" >> fastlane/.env
 FL_PROJECT_SIGNING_TARGETS=$TARGET_NAME
 GYM_SCHEME=$TARGET_NAME" >> fastlane/.env.ios
 
+# update app name in metadata
+    echo "$STORE_NAME" > fastlane/metadata/en-US/name.txt
+
     bundle install
-    fastlane create_app
-    fastlane produce associate_merchant -a $BUNDLE_ID merchant.com.saee.scannerApplePayLive
-    fastlane ios release
+    # fastlane create_app
+    # fastlane produce associate_merchant -a $BUNDLE_ID merchant.com.saee.scannerApplePayLive
+    # fastlane ios release
 }
 
 cleanup() {
@@ -72,8 +75,8 @@ cleanup() {
     rm -rf $DIR_CODEBASE
 }
 
-generatAppIcons
-prepareRepository
+# generatAppIcons
+# prepareRepository
 cd $DIR_CODEBASE
 createNewTarget
 pod install
