@@ -63,9 +63,12 @@ GYM_SCHEME=$TARGET_NAME" >> fastlane/.env.ios
     echo "$STORE_NAME" > fastlane/metadata/en-US/name.txt
 
     bundle install
-    # fastlane create_app
-    # fastlane produce associate_merchant -a $BUNDLE_ID merchant.com.saee.scannerApplePayLive
-    # fastlane ios release
+    fastlane create_app
+    fastlane produce associate_merchant -a $BUNDLE_ID merchant.com.saee.scannerApplePayLive
+    fastlane pilot import -c fastlane/testers/pak_office.csv -a com.storespal.FahedStore95 # -g "Pak Office"
+    fastlane pilot import -c fastlane/testers/jeddah_office.csv -a com.storespal.FahedStore95 # -g "Pak Office"
+    fastlane ios release
+    fastlane ios submit_review
 }
 
 cleanup() {
