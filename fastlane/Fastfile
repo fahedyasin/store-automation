@@ -28,7 +28,9 @@ platform :ios do
 
   desc "Sync signing"
   lane :signing do
-    get_push_certificate
+    get_push_certificate(
+      app_identifier: ENV['MATCH_APP_IDENTIFIER']
+    )
     # generate_screenshots
     sync_code_signing #match
     mapping = Actions.lane_context[

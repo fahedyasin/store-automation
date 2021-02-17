@@ -83,12 +83,12 @@ cleanup() {
 }
 
 generatAppIcons
-# prepareRepository
+prepareRepository
 cd $DIR_CODEBASE
 createNewTarget
 pod install
 copyAppIconFiles
-# managePullRequest
+managePullRequest
 prepareFastlane
 # cleanup
 # echo $STORE_NAME $APP_ICON_FILE
