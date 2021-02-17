@@ -6,11 +6,13 @@ desc "Create app in Developer Portal and on App Store Connect"
 lane :create_app do
   # create_app_online #produce
   produce(
+    language: 'English',
     enable_services: {
       apple_pay: "on",
       associated_domains: "on",
       push_notification: "on"
-    }
+    },
+    itc_users: ["fahed@saee.sa","raja.n@saee.sa"]
   )
   end
 
@@ -26,6 +28,7 @@ platform :ios do
 
   desc "Sync signing"
   lane :signing do
+    get_push_certificate
     # generate_screenshots
     sync_code_signing #match
     mapping = Actions.lane_context[
@@ -49,22 +52,6 @@ platform :ios do
   end
 
   lane :submit_review do
-    upload_to_testflight(
-      beta_app_feedback_email: "fahed@saee.sa",
-      beta_app_description: "This is a description of my app",
-      notify_external_testers: true,
-      distribute_external: true,
-      distribute_only: true,
-      beta_app_review_info: {
-        contact_email: "fahed@saee.sa",
-        contact_first_name: "Fahed",
-        contact_last_name: "Yasin",
-        contact_phone: "+923334705906",
-        demo_account_name: "",
-        demo_account_password: "",
-        notes: "this is review note for the reviewer <3 thank you for reviewing"
-      }
-    )
     deliver(
       build_number: '1',
       submit_for_review: false,
@@ -79,6 +66,47 @@ platform :ios do
       },
       app_rating_config_path: 'fastlane/metadata/app_store_rating_config.json',
       price_tier: 0
+    )
+  end
+
+  lane :distribute do
+    upload_to_testflight(
+      app_identifier: ENV['MATCH_APP_IDENTIFIER'],
+      demo_account_required: false,
+      build_number: '1',
+      groups:[
+        "Pak Office",
+        "Jeddah Office"
+      ],
+      # ipa: ENV['GYM_OUTPUT_DIRECTORY'] + '/' + ENV['PRODUCE_APP_NAME'] + '.ipa',
+      localized_app_info: {
+        "default": {
+          feedback_email: ENV['DISTRIBUTE_FEEDBACK_EMAIL'],
+          marketing_url: ENV['DISTRIBUTE_MARKETING_URL'],
+          privacy_policy_url: ENV['DISTRIBUTE_PRIVACY_POLICY_URL'],
+          description: "This is a description of my app",
+        },
+        "en-US": {
+          feedback_email: ENV['DISTRIBUTE_FEEDBACK_EMAIL'],
+          marketing_url: ENV['DISTRIBUTE_MARKETING_URL'],
+          privacy_policy_url: ENV['DISTRIBUTE_PRIVACY_POLICY_URL'],
+          description: "This is a description of my app",
+        }
+      },
+      notify_external_testers: true,
+      distribute_external: true,
+      # skip_waiting_for_build_processing: true,
+      distribute_only: true,
+      changelog: "This is my changelog of things that have changed in a log",
+      beta_app_review_info: {
+        contact_email: ENV['DISTRIBUTE_FEEDBACK_EMAIL'],
+        contact_first_name: "Fahed",
+        contact_last_name: "Yasin",
+        contact_phone: "+923334705906",
+        demo_account_name: "",
+        demo_account_password: "",
+        notes: "this is review note for the reviewer <3 thank you for reviewing"
+      }
     )
   end
 end

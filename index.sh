@@ -6,6 +6,9 @@ WEBSITE_ID="$3"
 BASE_URL="$4"
 COMPANY_NAME="$5"
 APP_ICON_FILE="$6"
+PRIVACY_POLICY_URL="$7"
+MARKETING_URL="$8"
+FEEDBACK_EMAIL="$9"
 TARGET_NAME=$(echo $STORE_NAME | tr -d ' ')
 BRANCH_NAME="store-$TARGET_NAME"
 BUNDLE_ID="com.storespal.$TARGET_NAME"
@@ -52,7 +55,10 @@ PRODUCE_APP_IDENTIFIER=$BUNDLE_ID
 MATCH_APP_IDENTIFIER=$BUNDLE_ID
 DELIVER_APP_IDENTIFIER=$BUNDLE_ID
 PRODUCE_APP_NAME=$STORE_NAME
-PRODUCE_SKU=$SKU" >> fastlane/.env
+PRODUCE_SKU=$SKU
+DISTRIBUTE_PRIVACY_POLICY_URL=$PRIVACY_POLICY_URL
+DISTRIBUTE_MARKETING_URL=$MARKETING_URL
+DISTRIBUTE_FEEDBACK_EMAIL=$FEEDBACK_EMAIL" >> fastlane/.env
 
 # append .env.ios file
     echo "
@@ -63,12 +69,10 @@ GYM_SCHEME=$TARGET_NAME" >> fastlane/.env.ios
     echo "$STORE_NAME" > fastlane/metadata/en-US/name.txt
 
     bundle install
-    fastlane create_app
-    fastlane produce associate_merchant -a $BUNDLE_ID merchant.com.saee.scannerApplePayLive
-    fastlane pilot import -c fastlane/testers/pak_office.csv -a com.storespal.FahedStore95 # -g "Pak Office"
-    fastlane pilot import -c fastlane/testers/jeddah_office.csv -a com.storespal.FahedStore95 # -g "Pak Office"
-    fastlane ios release
-    fastlane ios submit_review
+    bundle exec fastlane create_app
+    bundle exec fastlane produce associate_merchant -a $BUNDLE_ID merchant.com.saee.scannerApplePayLive
+    bundle exec fastlane ios release
+    bundle exec fastlane ios submit_review
 }
 
 cleanup() {
@@ -78,7 +82,7 @@ cleanup() {
     rm -rf $DIR_CODEBASE
 }
 
-# generatAppIcons
+generatAppIcons
 # prepareRepository
 cd $DIR_CODEBASE
 createNewTarget
